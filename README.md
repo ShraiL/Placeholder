@@ -110,3 +110,184 @@ Your application should now launch, allowing you to add, edit, and delete your n
 * **"Object Reference Not Set to an Instance of an Object":** Often means a UI control (like a TextBox) isn't initialized, or you're trying to access a property on a `null` object. Check your `InitializeComponent()` and ensure objects are properly instantiated and assigned.
 
 By following these steps, you'll be well-prepared to quickly adjust this template for your exam!
+
+
+
+
+Absolutely — here’s a **complete step-by-step guide** to help you change every placeholder in your app and make it fully your own. This guide assumes you're starting from the **placeholder version** with names like `EntityName`, `Property1Name`, etc.
+
+---
+
+## 🧭 Step-by-Step Guide: Rename Everything in the App
+
+Let’s say your app is for **laptops**. Here's how you'd replace everything properly:
+
+---
+
+### 🔁 1. **Global Find & Replace (Ctrl + H)**
+
+In **Visual Studio**, press **Ctrl + H** (Find and Replace). Use the following table to change all placeholders.
+
+| Placeholder                | Replace With (Laptop Example) |
+| -------------------------- | ----------------------------- |
+| `EntityName`               | `Laptop`                      |
+| `EntityNamePlural`         | `Laptops`                     |
+| `Property1Name`            | `Model`                       |
+| `Property1Type`            | `string`                      |
+| `Property2Name`            | `MemorySize`                  |
+| `Property2Type`            | `float`                       |
+| `Property3Name`            | `Cores`                       |
+| `Property3Type`            | `int`                         |
+| `EntityNamePluralDatabase` | `LaptopsDatabase`             |
+
+> 🔎 In the **Find box**, type the placeholder **without brackets**, e.g. `EntityName`.
+> ✅ In the **Replace with box**, type e.g. `Laptop`, then press **Replace All**.
+
+Do this for each item above.
+
+---
+
+### 📁 2. **File Names (Optional but Recommended)**
+
+Rename these files accordingly in Solution Explorer:
+
+| Old File                       | New File                   |
+| ------------------------------ | -------------------------- |
+| `EntityName.cs`                | `Laptop.cs`                |
+| `EntityNameDialog.cs`          | `LaptopDialog.cs`          |
+| `EntityNameDialog.Designer.cs` | `LaptopDialog.Designer.cs` |
+| `EntityNamePlural.sql`         | `Laptops.sql`              |
+
+> Right-click → Rename
+> Update the `class` name inside the file as well
+
+---
+
+### 🖥️ 3. **Adjust the SQL `.sql` File**
+
+Open `Laptops.sql` and ensure it matches:
+
+```sql
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'LaptopsDatabase')
+BEGIN
+    CREATE DATABASE LaptopsDatabase;
+END
+GO
+
+USE LaptopsDatabase;
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Laptops' AND xtype='U')
+BEGIN
+    CREATE TABLE Laptops (
+        Id INT PRIMARY KEY IDENTITY(1,1),
+        Model NVARCHAR(255) NOT NULL,
+        MemorySize FLOAT NOT NULL,
+        Cores INT NOT NULL
+    );
+END
+GO
+```
+
+---
+
+### 🧱 4. **Adjust `Laptop.cs` (Model)**
+
+```csharp
+public class Laptop
+{
+    public int Id { get; set; }
+    public string Model { get; set; }
+    public float MemorySize { get; set; }
+    public int Cores { get; set; }
+
+    public Laptop(string model, float memorySize, int cores)
+    {
+        Model = model;
+        MemorySize = memorySize;
+        Cores = cores;
+    }
+
+    public override string ToString()
+    {
+        return $"{Model} ({MemorySize} GB, {Cores} Cores)";
+    }
+}
+```
+
+---
+
+### 🧠 5. **Adjust UI Labels/TextBoxes in `LaptopDialog.Designer.cs`**
+
+Rename controls and their labels:
+
+| Control Name       | What to write      |
+| ------------------ | ------------------ |
+| `ModelTxtBox`      | TextBox for model  |
+| `MemorySizeTxtBox` | TextBox for memory |
+| `CoresTxtBox`      | TextBox for cores  |
+| `DoneButton`       | Keep as is         |
+
+Label text examples:
+
+```csharp
+this.modelLbl.Text = "Model:";
+this.memorysizeLbl.Text = "Memory Size (GB):";
+this.coresLbl.Text = "Cores:";
+```
+
+---
+
+### 🧩 6. **Form1 Controls in `Form1.Designer.cs`**
+
+Make sure to update:
+
+* `LaptopsListBox`
+* `AddLaptopButton`
+* `EditLaptopButton`
+* `DeleteLaptopButton`
+* `laptopsLbl`
+
+Update the `Text` of each button:
+
+```csharp
+this.AddLaptopButton.Text = "Add Laptop";
+this.EditLaptopButton.Text = "Edit Laptop";
+this.DeleteLaptopButton.Text = "Delete Laptop";
+this.laptopsLbl.Text = "Laptop List:";
+this.Text = "Laptop Management";
+```
+
+---
+
+### 🔗 7. **Connection String in `Form1.cs`**
+
+Make sure the connection string matches the DB:
+
+```csharp
+private string connectionString = "Server=YOUR_SERVER_NAME;Database=LaptopsDatabase;Integrated Security=True;TrustServerCertificate=True;";
+```
+
+Replace `YOUR_SERVER_NAME` with your SQL Server instance (e.g., `SHRAI\\SQLEXPRESS`).
+
+---
+
+### ✅ 8. **Build & Run**
+
+1. Press **Ctrl + Shift + B** to build
+2. Run your SQL script manually in SSMS or Visual Studio → SQL Server Object Explorer
+3. Start the app
+4. Add, edit, delete laptops ✅
+
+---
+
+### 🧼 Optional Cleanup Tips
+
+* Remove unused using statements (`Ctrl + R, G`)
+* Group files in folders (`Models`, `Dialogs`, etc.)
+* Add comments if needed
+
+---
+
+Want me to generate the final version of your code with these replacements already applied for `Laptop` example? I can send it directly.
+
