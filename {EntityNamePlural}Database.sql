@@ -22,3 +22,9 @@ BEGIN
     );
 END
 GO
+
+USE EntityNamePluralDatabase;
+GO
+
+SELECT * FROM EntityNamePlural;
+
